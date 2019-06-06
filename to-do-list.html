@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/vue.js" ></script>
+		<style type="text/css">
+			.finished{
+				text-decoration: line-through;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="app">
+			<input type="text" v-model="finish"/><button @click="add">添加</button>
+			<ul>
+				<li v-for="(item,index) in arr" :key="index" @click="onClick($event,index)" :class="{finished:item.flag}">{{item.title}}</li>
+			</ul>
+			
+		</div>
+		<script type="text/javascript">
+			var app=new Vue({
+				el:".app",
+				data:{
+					finish:"",
+					arr:[
+					{title:"7:00 起床",flag:false},
+					{title:"8:00 吃早饭",flag:false}
+					]
+				},
+				methods:{
+					onClick:function(e,index){
+						console.log(e)
+						if(e.target.localName=="li"){
+							this.arr[index].flag=true
+						}
+					},
+					add:function(){
+						if (this.finish=="") {
+							alert("内容不能为空！！！")
+						} else{
+							this.arr.push({title:this.finish,flag:false})
+						this.finish=""
+						}
+						
+					}
+				}
+			})
+			
+			
+		</script>
+		
+		
+	</body>
+</html>
