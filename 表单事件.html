@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/vue.js" ></script>
+	</head>
+	<body>
+		<div class="app">
+			<table >
+				<tr>
+					<td>用户名:</td>
+					<td><input type="text" v-model="userName"/></td>
+				</tr>
+				<tr>
+					<td>年龄:</td>
+					<td><input type="number" v-model="age" /></td>
+				</tr>
+				<tr>
+					<td>性别:</td>
+					<td>
+						<input type="radio" v-model="sex" value="男"/>男
+						<input type="radio" v-model="sex" value="女"/>女
+					</td>
+				</tr>
+				<tr>
+					<td>爱好:</td>
+					<td>
+						<input type="checkbox" v-model="hobby" value="钓鱼"/>钓鱼
+						<input type="checkbox" v-model="hobby" value="游泳"/>游泳
+						<input type="checkbox" v-model="hobby" value="滑冰"/>滑冰
+						<input type="checkbox" v-model="hobby" value="桌球"/>桌球
+					</td>
+				</tr>
+				<tr>
+					<td>学历:</td>
+					<td>
+						<select v-model="education">
+							<option value="0">小学</option>
+							<option value="1">初中</option>
+							<option value="2">高中</option>
+							<option value="3">大学</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>备注说明：</td>
+					<td><textarea v-model.trim="descript"></textarea></td>
+				</tr>
+			</table>
+			<p>{{userName}}</p>
+			<p>{{age}}</p>
+			<p>{{sex}}</p>
+			<p>{{hobby}}</p>
+			<p>{{education}}</p>
+			<p>{{descript.length}}</p>
+		</div>
+		
+		<script type="text/javascript">
+			var app=new Vue({
+				el:".app",
+				data:{
+					userName:"admin",
+					age:0,
+					sex:"男",
+					hobby:[],
+					education:0,
+					descript:""
+				},
+				methods:{}
+			})
+			
+			
+		</script>
+	</body>
+</html>
