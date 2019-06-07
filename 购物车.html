@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/vue.js" ></script>
+	</head>
+	<body>
+		<div class="app">
+			<ul>
+				<li v-for="(item,index) in product" :key="index">
+					<div>
+						<input type="checkbox" v-model="item.flag" @click="select(index,item.flag)"/>
+						标题：{{item.title}}
+						价格：{{item.price}}
+					</div>
+					<div>
+						<button @click="item.count<2?1:--item.count">-</button>
+						数量：{{item.count}}
+						<button @click="item.count++">+</button>
+					</div>
+				</li>
+			</ul>
+			<p><input type="checkbox" v-model="allSelected"  >全选</p>
+			<p>总数：{{sum}}</p>
+			<p>总价：{{all}}</p>
+			{{selected}}
+		</div>
+		
+		<script type="text/javascript">
+			var app=new Vue({
+				el:".app",
+				data:{
+					product:[
+					{title:"手机",price:5000,count:2,flag:false},
+					{title:"手表",price:6000,count:1,flag:false},
+					{title:"笔记本",price:7000,count:3,flag:false},
+					{title:"冰箱",price:8000,count:5,flag:false},
+					{title:"平板",price:10000,count:5,flag:false},
+					],
+					selected:[],
+					allSelected:false
+				},
+				computed:{
+					sum:function(){
+						var n=0;
+						var that=this;
+						this.product.forEach(function(item,index){
+							if (item.flag) {
+								n+=item.count
+							}
+						});
+						return n
+					},
+					all:function(){
+						var n=0;
+						var that=this;
+						this.product.forEach(function(item,index){
+							if (item.flag) {
+								n+=item.count*item.price
+							}
+						});
+						return n
+					}
+				},
+				watch:{
+					selected:function(val){
+						if (val.length==this.product.length) {
+							this.allSelected=true
+						} else{
+							this.allSelected=false
+						}
+					},
+					allSelected:function(val){
+						if(val){
+							var tmp=[];
+							this.product.forEach(function(item,index){
+								tmp.push(index)
+								item.flag=true
+							});
+							this.selected=tmp
+						}else{
+							this.selected=[];
+							this.product.forEach(function(item,index){
+								item.flag=false
+							});
+						}
+					}
+				},
+				methods:{
+					select:function(inx,flag){
+						if (flag) {
+							this.selected.push(inx)
+						} else{
+							var i=0;
+							this.selected.forEach(function(item,index){
+								if (item==inx) {
+									i=index
+								}
+							});
+							
+							this.selected.splice(i,1)
+						}
+						
+					}
+				}
+			})
+			
+			
+		</script>
+	</body>
+</html>
