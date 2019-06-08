@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.box{
+				width: 450px;
+				height: 300px;
+				border: solid red 1px;
+				margin: 50px auto;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.bubble{
+				width: 30px;
+				height: 30px;
+				background-image: url(img/blue.png);
+				position: absolute;
+				top: 0;
+				left: 0;
+				background-size: contain;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			
+		</div>
+		
+		<script type="text/javascript">
+			var box=document.querySelector(".box");
+			var bubbles=[];
+			var n=20;
+			
+			function bubble(){
+				
+				//宽 高
+				this.w=Math.random()*30+20
+				this.h=this.w
+				this.r=this.w/2
+				
+				//位置x,y
+				this.x=Math.random()*(450-this.w)
+				this.y=Math.random()*(300-this.h)
+				
+				//圆心位置rx ry
+				this.rx=this.x+this.r
+				this.ry=this.y+this.r
+				
+				//方向
+				this.d=Math.random()*2*Math.PI
+				
+				//速度
+				this.v=1+Math.random()*9
+				
+				//div
+				this.div=document.createElement("div")
+				
+				//初始化div
+				this.init=function(){
+					
+					this.div.className="bubble"
+					this.div.style.width=this.w+"px"
+					this.div.style.height=this.h+"px"
+					this.div.style.top=this.y+"px"
+					this.div.style.left=this.x+"px"
+					
+					box.appendChild(this.div)
+				}
+				
+				
+				//移动
+				this.move=function(){
+					
+					var x1=this.x+Math.cos(this.d)*this.v
+					var y1=this.y+Math.sin(this.d)*this.v
+					
+					this.setPosition(x1,y1)
+				
+				}
+				
+				this.setPosition=function(x1,y1){
+					//越界处理
+					x1=x1<(this.w*-1)?450:x1;
+					x1=x1>450?(this.w*-1):x1;
+					
+					y1=y1<(this.h*-1)?300:y1;
+					y1=y1>300?(this.h*-1):y1;
+					
+					this.rx=x1+this.r;
+					this.ry=y1+this.r;
+					
+					
+					this.x=x1;
+					this.y=y1;
+					
+					this.div.style.top=this.y+"px";
+					this.div.style.left=this.x+"px";
+				}
+				
+				//检查气泡碰撞
+				this.check=function(){
+					for (var i=0;i<bubbles.length;i++) {
+						
+						if(bubbles[i]!=this){
+							
+							var l2=Math.pow((bubbles[i].rx-this.rx),2)+Math.pow((bubbles[i].ry-this.ry),2)
+							
+							if (l2<=Math.pow((bubbles[i].r+this.r),2)) {
+								return bubbles[i]
+							}
+							
+						}
+						
+					}
+					return null
+				}
+				
+			}
+			
+			//实例化气泡
+			
+			for (var i=0;i<n;i++) {
+				var b=new bubble();
+				
+				b.init()
+				
+				bubbles.push(b)
+			}
+			
+			var t=setInterval(function(){
+				
+				for (var i=0;i<bubbles.length;i++) {
+					
+					
+					bubbles[i].move();
+					
+					var b=bubbles[i].check();
+					
+					if (b!=null) {
+						
+						//交换运动方向
+						var tmp=b.d;
+						b.d=bubbles[i].d;
+						bubbles[i].d=tmp
+						
+						while(b==bubbles[i].check()){
+							bubbles[i].move()
+						}
+						
+					}
+					
+				}
+				
+			},100)
+			
+			
+			
+		</script>
+	</body>
+</html>
