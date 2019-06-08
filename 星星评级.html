@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/vue.js" ></script>
+		<style type="text/css">
+			.rate-star {
+				display: inline-block;
+				color: #888;
+				line-height: inherit;
+				font-size: 30px;
+				cursor: pointer;
+			}
+			
+			.rate-star .active {
+				color: #f44;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="app">
+			
+			<rate-star  v-model="star"></rate-star>
+			<p>{{star}}</p>
+		</div>
+		<script type="text/javascript">
+			
+			Vue.component("rate-star",{
+				template: "<div class='rate-star' @mouseleave='leave' >\
+							<span :class='{active:tmp>=n }' v-for='n in 5' :key='n'  @mouseover='hover(n)'  @click='enter(n)' >★</span>\
+						 	{{tmp}}星\
+						 </div>",
+				data:function(){
+					return {
+						val:0,
+						tmp:0
+					}
+				},
+				props:{
+					value:{
+						type:Number,
+						default:0
+					}
+				},
+				methods:{
+					leave:function(){
+						this.tmp=this.val
+					},
+					enter:function(n){
+						this.val=n;
+						this.tmp=n;
+						this.$emit("input",n)
+					},
+					hover:function(n){
+						this.tmp=n;
+						
+					}
+				},
+				watch:{
+					value:function(val){
+						this.val=val;
+						this.tmp=val
+					}
+				},
+				created:function(){
+					this.val=this.value;
+					this.tmp=this.value
+				}
+			})
+			
+			
+			var app=new Vue({
+				el:".app",
+				data:{
+					star:3
+				},
+				methods:{}
+			})
+			
+		</script>
+	</body>
+</html>
